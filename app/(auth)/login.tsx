@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router'; 
@@ -21,7 +21,6 @@ const LoginScreen = () => {
 
     try {
       const response = await loginUser(username, password);
-      console.log(response);
       await AsyncStorage.setItem('token', response.token);
       router.replace('/');
     } catch (error) {
@@ -37,7 +36,12 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Welcome back!</Text>
+      <Text style={styles.header2}>Please log in to continue.</Text>
+      <Image
+          source={require('@/assets/images/login.png')}
+          style={styles.loginSVG}
+        />
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -52,9 +56,21 @@ const LoginScreen = () => {
         onChangeText={setPassword}
       />
       <Button
-        title={loading ? 'Logging in...' : 'Login'}
+        title={loading ? 'Logging in...' : 'Log In'}
         onPress={handleLogin}
         disabled={loading}
+        titleStyle={{ 
+          fontSize: 22, 
+          color: 'white' ,
+          fontWeight: '600',
+        }}
+        buttonStyle={{ 
+          width: '100%',
+          backgroundColor: '#5993ED',
+          paddingVertical: 12,
+          borderRadius: 50,
+          marginTop: 10,
+        }} 
       />
       <View style={styles.container2}>
         <Text style={styles.text}>Don't have an account?</Text>
@@ -62,7 +78,7 @@ const LoginScreen = () => {
             title={'Sign Up'}
             onPress={handleSwitch}
             disabled={loading}
-            titleStyle={{ fontSize: 20, color: 'blue' }}
+            titleStyle={{ fontSize: 20, color: '#174982', fontWeight: '600' }}
             buttonStyle={{ backgroundColor: 'none' }} 
         />
       </View>
@@ -74,28 +90,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    padding: 30,
   },
   container2: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 40,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#174982'
+  },
+  header2: {
+    fontSize: 20,
+    marginBottom: 40,
+    textAlign: 'center',
   },
   input: {
     width: '100%',
     padding: 12,
     borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: 50,
+    marginBottom: 20,
   },
   text: {
     fontSize: 18,
     fontStyle: 'italic',
+  },
+  loginSVG: {
+    width: 250,
+    height: 250,
+    alignSelf: 'center',
+    marginBottom: 20,
   },
 });
 
